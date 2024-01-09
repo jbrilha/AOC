@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-g",
+      "-Wall",
+      "-std=c++17",
+      "-o",
+      "day1_part2",
+      "day1_part2.cpp"
+    ],
+    "directory": "/Users/joaobrilha/Developer/AOC/2023/day1",
+    "file": "/Users/joaobrilha/Developer/AOC/2023/day1/day1_part2.cpp",
+    "output": "/Users/joaobrilha/Developer/AOC/2023/day1/day1_part2"
+  }
+]
