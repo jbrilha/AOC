@@ -1,5 +1,4 @@
-# Advent of Code 2023
+# [Advent of Code 2023](https://adventofcode.com/)
 
 Using this as a way to learn C++
 
-[AOC](https://adventofcode.com/)
