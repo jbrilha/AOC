@@ -1,9 +1,5 @@
-#include <algorithm>
-#include <cctype>
 #include <iostream>
 #include <fstream>
-#include <ostream>
-#include <string>
 
 bool is_symbol(char ch) {
     if( ch == 0x2E )    // '.' not a symbol

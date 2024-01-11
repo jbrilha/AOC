@@ -1,9 +1,5 @@
-#include <algorithm>
-#include <cctype>
 #include <iostream>
 #include <fstream>
-#include <ostream>
-#include <string>
 
 int get_line_length(std::ifstream &input) {
     std::string line;
