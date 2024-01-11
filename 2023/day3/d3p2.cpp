@@ -5,17 +5,6 @@
 #include <ostream>
 #include <string>
 
-bool is_symbol(char ch) {
-    if( ch == 0x2E )    // '.' not a symbol
-        return false;
-
-    if(( 0x21 <= ch && ch <= 0x2F ) ||  // between [SPACE] and digits
-        ( 0x3A <= ch && ch <= 0x40 ))   // between digits and uppercase chars
-        return true;
-
-    return false;
-}
-
 int get_line_length(std::ifstream &input) {
     std::string line;
 
@@ -31,6 +20,7 @@ char** fill_schematic(std::ifstream &input, int ll) {
     std::string line;
     for(int row = 0; getline(input, line); row++) {
         schematic[row] = new char[ll];
+
         for(int col = 0; col < line.length(); col++)
             schematic[row][col] = line[col];
     }
@@ -39,9 +29,9 @@ char** fill_schematic(std::ifstream &input, int ll) {
 }
 
 void delete_schematic(char** schematic, int ll) {
-    for (int i = 0; i < ll; ++i) {
+    for (int i = 0; i < ll; ++i)
         delete[] schematic[i];
-    }
+
     delete[] schematic;
 }
 
@@ -58,16 +48,6 @@ int parse_digit(std::string digit_str) {
     return digit;
 }
 
-bool is_part_number(char** schematic, int d_start, int d_end, int row, int ll) {
-
-    for(int i = std::max(row - 1, 0); i <= std::min(row + 1, ll - 1); i++)
-        for(int j = std::max(d_start - 1, 0); j <= std::min(d_end + 1, ll - 1) ; j++)
-            if(is_symbol(schematic[i][j]))
-                return true;
-
-    return false;
-}
-
 int ratio_deez_gears(char** schematic, int ll, int row, int col) {
     
     int gear_count = 0;
@@ -78,7 +58,7 @@ int ratio_deez_gears(char** schematic, int ll, int row, int col) {
             std::string digit_str;
 
             if(isdigit((schematic[i][j]))) {
-                if(gear_count > 2)
+                if(gear_count == 2)
                     return 0;
 
                 int first_digit_j = j;
@@ -111,13 +91,11 @@ int ratio_deez_gears(char** schematic, int ll, int row, int col) {
 
 int sum_of_gear_ratios(char** schematic, int ll){
     int sum_of_gear_ratios = 0;
-    for(int i = 0; i < ll; i++) {
-        for(int j = 0; j < ll; j++) {
-            if(schematic[i][j] == '*') {
+
+    for(int i = 0; i < ll; i++)
+        for(int j = 0; j < ll; j++)
+            if(schematic[i][j] == '*')
                 sum_of_gear_ratios += ratio_deez_gears(schematic, ll, i, j);
-            }
-        }
-    }
 
     return sum_of_gear_ratios;
 }
@@ -133,7 +111,9 @@ int main(int argc, char *argv[]){
     int gear_ratios_sum = sum_of_gear_ratios(schematic, ll);
 
     std::cout << gear_ratios_sum << std::endl;
+
     delete_schematic(schematic, ll);
+
     input.close();
 
     return 0;

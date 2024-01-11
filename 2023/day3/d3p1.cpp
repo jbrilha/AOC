@@ -39,9 +39,9 @@ char** fill_schematic(std::ifstream &input, int ll) {
 }
 
 void delete_schematic(char** schematic, int ll) {
-    for (int i = 0; i < ll; ++i) {
+    for (int i = 0; i < ll; ++i)
         delete[] schematic[i];
-    }
+
     delete[] schematic;
 }
 
