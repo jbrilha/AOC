@@ -1,16 +1,10 @@
 #include <fstream>
-#include <string>
+#include <iostream>
 
-using namespace std;
-
-int main(int argc, char *argv[]) {
-    string line;
-    ifstream input(argv[1]);
-
-    if (!input.is_open())
-        printf("FAILED\n");
-    
+int calibrate(std::ifstream &input) {
     int calibration = 0;
+    std::string line;
+
     while (getline(input, line)) {
         int first_digit = -1;
         int last_digit = -1;
@@ -24,7 +18,18 @@ int main(int argc, char *argv[]) {
         }
         calibration += first_digit * 10 + last_digit;
     }
-    printf("%d\n", calibration);
+    return calibration;
+}
+
+int main(int argc, char *argv[]) {
+    std::ifstream input(argv[1]);
+
+    if (!input.is_open())
+        std::cout << "FAILED TO OPEN" << std::endl;
+
+    int calibration = calibrate(input);
+
+    std::cout << calibration << std::endl;
 
     input.close();
 
