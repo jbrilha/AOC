@@ -85,6 +85,7 @@ int count_cards(const std::vector<std::string> &lines, int i, int j) {
     for (int k = i; k < winners + i; k++) {
         total_cards++;
         count_cards(lines, k + 1, winners + j);
+        std::cout << total_cards << std::endl;
     }
 
     return winners;
@@ -100,7 +101,6 @@ int main(int argc, char *argv[]) {
     const std::vector<std::string> &lines = vectorize_lines(input);
 
     for (int i = 0; i < lines.size(); i++) {
-        std::cout << total_cards << std::endl;
         total_cards++;
         count_cards(lines, i, lines.size() - 1);
     }
