@@ -18,8 +18,7 @@ std::vector<std::string> vectorize_lines(std::ifstream &input) {
     return line_vec;
 }
 
-std::tuple<int, std::vector<int>, std::vector<int>>
-numbers_from_line(const std::string &line) {
+std::tuple<int, std::vector<int>, std::vector<int>> numbers_from_line(const std::string &line) {
     int game_ID = line[line.find(":") - 1] - 0x30;
 
     std::string winning_numbers(line.c_str() + line.find(": ") + 2,
@@ -55,20 +54,8 @@ int calc_wins(const std::vector<int> &winners,
     return cards;
 }
 
-int count_card_cards(std::string &line, const std::vector<std::string> &lines) {
-    int card_cards = 0;
-    auto game_numbers = numbers_from_line(line);
-    int game_ID = std::get<0>(game_numbers);
-    const std::vector<int> &winning_nums = std::get<1>(game_numbers);
-    const std::vector<int> &obtained_nums = std::get<2>(game_numbers);
-
-    card_cards = calc_wins(winning_nums, obtained_nums);
-
-    return card_cards;
-}
-
 int count_cards(const std::vector<std::string> &lines, int i, int j) {
-    
+
     auto game_numbers = numbers_from_line(lines[i]);
     int game_ID = std::get<0>(game_numbers);
     const std::vector<int> &winning_nums = std::get<1>(game_numbers);
@@ -101,7 +88,8 @@ int main(int argc, char *argv[]) {
 
     auto end_time = std::chrono::high_resolution_clock::now();
 
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end_time - start_time);
 
     std::cout << total_cards << " | " << duration.count() << "ms" << std::endl;
 
