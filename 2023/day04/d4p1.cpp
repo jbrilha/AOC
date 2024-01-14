@@ -43,6 +43,8 @@ int calc_points(const std::vector<int> &winners, const std::vector<int> &obtaine
 }
 
 int main(int argc, char *argv[]) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     std::string line;
     std::ifstream input(argv[1]);
 
@@ -58,8 +60,10 @@ int main(int argc, char *argv[]) {
         
         total_points += calc_points(winning_nums, obtained_nums);
     }
+    auto end_time = std::chrono::high_resolution_clock::now();
 
-    std::cout << total_points << std::endl;
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << total_points << " | " << duration.count() << "ms" << std::endl;
 
     input.close();
 

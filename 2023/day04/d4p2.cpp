@@ -1,3 +1,4 @@
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -75,17 +76,9 @@ int count_cards(const std::vector<std::string> &lines, int i, int j) {
 
     int winners = calc_wins(winning_nums, obtained_nums);
 
-    // std::cout << where << " | "
-    //           << "from: " << ID << " @ "
-    //           << "g: " << game_ID
-    //           << " | w: " << calc_wins(winning_nums, obtained_nums)
-    //           << " | o: " << obtained_nums[0] << " | tc: " << total_cards
-    //           << std::endl;
-
     for (int k = i; k < winners + i; k++) {
         total_cards++;
         count_cards(lines, k + 1, winners + j);
-        std::cout << total_cards << std::endl;
     }
 
     return winners;
@@ -95,6 +88,7 @@ int main(int argc, char *argv[]) {
     std::string line;
     std::ifstream input(argv[1]);
 
+    auto start_time = std::chrono::high_resolution_clock::now();
     if (!input.is_open())
         std::cout << "FAILED TO OPEN" << std::endl;
 
@@ -105,7 +99,11 @@ int main(int argc, char *argv[]) {
         count_cards(lines, i, lines.size() - 1);
     }
 
-    std::cout << total_cards << std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+    std::cout << total_cards << " | " << duration.count() << "ms" << std::endl;
 
     input.close();
 
