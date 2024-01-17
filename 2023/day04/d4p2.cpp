@@ -4,6 +4,7 @@
 #include <sstream>
 #include <tuple>
 #include <vector>
+#include <map>
 
 int total_cards = 0;
 
@@ -21,10 +22,10 @@ std::vector<std::string> vectorize_lines(std::ifstream &input) {
 std::tuple<int, std::vector<int>, std::vector<int>> numbers_from_line(const std::string &line) {
     int game_ID = line[line.find(":") - 1] - 0x30;
 
-    std::string winning_numbers(line.c_str() + line.find(": ") + 2,
+    std::string winning_numbers(line.c_str() + line.find(":") + 1,
                                 line.c_str() + line.find(" |"));
 
-    std::string obtained_numbers(line.c_str() + line.find("| ") + 2,
+    std::string obtained_numbers(line.c_str() + line.find("|") + 1,
                                  line.length());
 
     std::vector<int> obtained_nums_vec;
@@ -53,19 +54,25 @@ int calc_wins(const std::vector<int> &winners,
 
     return cards;
 }
-
-int count_cards(const std::vector<std::string> &lines, int i, int j) {
+int count_cards(int og, std::map<int, int> &seen, const std::vector<std::string> &lines, int i, int j) {
 
     auto game_numbers = numbers_from_line(lines[i]);
     int game_ID = std::get<0>(game_numbers);
     const std::vector<int> &winning_nums = std::get<1>(game_numbers);
     const std::vector<int> &obtained_nums = std::get<2>(game_numbers);
 
+    // int total_wins = seen[game_ID];
+    int total_wins = 0;
+
     int winners = calc_wins(winning_nums, obtained_nums);
 
+    seen[game_ID]++;
+
+    std::cout << "@ " << game_ID << std::endl;
     for (int k = i; k < winners + i; k++) {
-        total_cards++;
-        count_cards(lines, k + 1, winners + j);
+        // if(seen[k] != 0) {
+        seen[game_ID] += count_cards(og, seen, lines, k + 1, winners + j);
+        // }
     }
 
     return winners;
@@ -80,10 +87,18 @@ int main(int argc, char *argv[]) {
         std::cout << "FAILED TO OPEN" << std::endl;
 
     const std::vector<std::string> &lines = vectorize_lines(input);
+    std::map<int, int> seen {};
 
     for (int i = 0; i < lines.size(); i++) {
-        total_cards++;
-        count_cards(lines, i, lines.size() - 1);
+        int og = i + 1;
+        // total_cards++;
+        if(seen[i + 1] == 0) {
+            std::cout << "processing " << i + 1 << " | seen: " << seen[i + 1] << std::endl;
+            count_cards(og,seen, lines, i, lines.size() - 1);
+        }
+            total_cards += seen[i + 1];
+
+        std::cout << "processed " << i + 1 << " | seen: " << seen[i + 1] << std::endl;
     }
 
     auto end_time = std::chrono::high_resolution_clock::now();
