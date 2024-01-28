@@ -8,24 +8,30 @@ project(AOC)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/build/debug)
 
-set(PROBLEM_RANGE 1 25)
+# Define the range of problem numbers
+set(DAYS_START 1)
+set(DAYS_END 25)
 
-foreach(PROBLEM ${PROBLEM_RANGE})
-    if(${PROBLEM} LESS 10)
-        set(PROBLEM_ZERO "0${PROBLEM}")
+# Generate the list of problem numbers within the range
+math(EXPR DAY_END "${DAYS_END} + 1") # To include DAY_END itself
+foreach(DAY RANGE ${DAYS_START} ${DAYS_END})
+    if(${DAY} LESS 10)
+        set(DAY_ZERO "0${DAY}")
     else()
-        set(PROBLEM_ZERO "${PROBLEM}")
+        set(DAY_ZERO "${DAY}")
     endif()
     
-    set(PROBLEM_DIR "${CMAKE_SOURCE_DIR}/day${PROBLEM_ZERO}")
-    
-    file(GLOB PROBLEM_SOURCES "${PROBLEM_DIR}/d${PROBLEM_ZERO}p${PROBLEM}.cpp")
-    if(PROBLEM_SOURCES)
-        set(TARGET_NAME "d${PROBLEM_ZERO}p${PROBLEM}")
-        
-        add_executable(${TARGET_NAME} ${PROBLEM_SOURCES})
-    endif()
+    set(DAY_DIR "${CMAKE_SOURCE_DIR}/day${DAY_ZERO}")
+    foreach(PART RANGE 1 2)
+        file(GLOB DAY_SOURCES "${DAY_DIR}/d${DAY_ZERO}p${PART}.cpp")
+
+        if(DAY_SOURCES)
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DAY_DIR})
+        set(TARGET_NAME "d${DAY_ZERO}p${PART}")
+            
+            add_executable(${TARGET_NAME} ${DAY_SOURCES})
+        endif()
+    endforeach()
 endforeach()
