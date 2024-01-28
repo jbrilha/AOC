@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.20)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_COMPILER "g++")
+
+project(AOC)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/build/debug)
+
+set(PROBLEM_RANGE 1 25)
+
+foreach(PROBLEM ${PROBLEM_RANGE})
+    if(${PROBLEM} LESS 10)
+        set(PROBLEM_ZERO "0${PROBLEM}")
+    else()
+        set(PROBLEM_ZERO "${PROBLEM}")
+    endif()
+    
+    set(PROBLEM_DIR "${CMAKE_SOURCE_DIR}/day${PROBLEM_ZERO}")
+    
+    file(GLOB PROBLEM_SOURCES "${PROBLEM_DIR}/d${PROBLEM_ZERO}p${PROBLEM}.cpp")
+    if(PROBLEM_SOURCES)
+        set(TARGET_NAME "d${PROBLEM_ZERO}p${PROBLEM}")
+        
+        add_executable(${TARGET_NAME} ${PROBLEM_SOURCES})
+    endif()
+endforeach()
