@@ -10,12 +10,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/build/debug)
 
-# Define the range of problem numbers
 set(DAYS_START 1)
 set(DAYS_END 25)
 
-# Generate the list of problem numbers within the range
-math(EXPR DAY_END "${DAYS_END} + 1") # To include DAY_END itself
+math(EXPR DAY_END "${DAYS_END} + 1")
+
 foreach(DAY RANGE ${DAYS_START} ${DAYS_END})
     if(${DAY} LESS 10)
         set(DAY_ZERO "0${DAY}")
