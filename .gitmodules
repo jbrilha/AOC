@@ -7,3 +7,6 @@
 [submodule "2015"]
 	path = 2015
 	url = https://github.com/jbrilha/AOC_2015
+[submodule "2025"]
+	path = 2025
+	url = git@github.com:jbrilha/AOC_2025.git
